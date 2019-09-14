@@ -19,6 +19,5 @@ app.listen(process.env.PORT || 8000, () => {
     const a = database.query('select * from Doenca', (error, results, fields ) => {
         console.log(results[0].nome);
     });
-    // const a = database
-    //console.log(a);
+    
 });

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">COntrole de Doenças</string>
+    <string name="texto_botao">Clique aqui</string>
+    <string name="valor1">Valor 1:</string>
+    <string name="valor2">Valor: 2</string>
+    <string name="resultado">Resultlado:</string>
+</resources>
