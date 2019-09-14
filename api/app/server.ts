@@ -13,6 +13,10 @@ const app = express();
 
 export const database = mysql.createConnection(options);
 
+app.use(cors());
+
+app.use(bodyparser.json());
+
 app.get('/', (req, res) => res.json({teste: 'teste'}));
 
 app.use('/app',appRoutes);
