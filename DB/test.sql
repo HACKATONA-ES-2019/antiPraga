@@ -8,6 +8,12 @@ USE hackatona;
 CREATE TABLE Doenca (nome VARCHAR(100), idDoenca INT(2));
 CREATE TABLE Sintoma (nome VARCHAR(100), idSintoma INT(2));
 CREATE TABLE SintomasDoenca (idDoenca INT(2), idSintoma VARCHAR(2));
+CREATE TABLE `hackatona`.`Medico` (
+  `id_medico` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(80) NOT NULL,
+  `cremers` INT NOT NULL,
+  `senha` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_medico`));
 
 -- INSERTS 
 INSERT INTO Doenca(nome,idDoenca)
@@ -60,5 +66,6 @@ INSERT INTO SintomasDoenca(idDoenca,idSintoma)
 VALUES(4,7);
 INSERT INTO SintomasDoenca(idDoenca,idSintoma)
 VALUES(4,8);
+
 
 
