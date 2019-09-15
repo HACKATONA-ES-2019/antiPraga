@@ -24,6 +24,11 @@ public class RequestService {
 
         void onError();
     }
+  public interface BookmarkCallbackDoencas {
+        void onSuccess(List<DoencaCoordenada> list);
+
+        void onError();
+    }
 
     public void retornarSintomas(final BookmarkCallback callback) {
 
@@ -60,7 +65,7 @@ public class RequestService {
         });
     }
 
-    public void enviarSintomas(final BookmarkCallback callback, List<Sintoma> listaSintomas) {
+    public void enviarSintomas(final BookmarkCallbackDoencas callback, List<Sintoma> listaSintomas) {
 
         Call<List<Sintoma>> call = new RetrofitConfig().getServices().sendSintoma(listaSintomas);
 
@@ -68,8 +73,8 @@ public class RequestService {
         call.enqueue(new Callback<List<Sintoma>>() {
             @Override
             public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
-                List<Sintoma> list = new ArrayList<>();
-                Sintoma sintoma;
+                List<DoencaCoordenada> list = new ArrayList<>();
+                DoencaCoordenada doencaCoordenada;
                 if (!response.isSuccessful()) {
                     callback.onError();
                 } else {
@@ -78,9 +83,9 @@ public class RequestService {
 
                     for (Sintoma size : response.body()) {
 
-                        sintoma = new Sintoma(size.getNome(), size.getIdSintoma());
+                        doencaCoordenada = new DoencaCoordenada(size.getNome());
 
-                        list.add(sintoma);
+                        list.add(doencaCoordenada);
 
                     }
                     callback.onSuccess(list);

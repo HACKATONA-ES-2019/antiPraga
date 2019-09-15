@@ -4,6 +4,7 @@ import com.hackatona.epidemia.entity.*;
 
 import java.util.List;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,7 +18,7 @@ public interface APIServices {
         Call<List<Sintoma>> requestSintoma();
 
         @POST(SEND_SINTOMAS)
-        Call<List<Sintoma>> sendSintoma(List<Sintoma> listaSintomas);
+        Call<List<Sintoma>> sendSintoma(@Body List<Sintoma> listaSintomas);
 
         @GET(SEND_COORDENADAS)
         Call<List<DoencaCoordenada>> sendCoordenadas(@Path("latitude") double latitude, @Path("longitude") double longitude);

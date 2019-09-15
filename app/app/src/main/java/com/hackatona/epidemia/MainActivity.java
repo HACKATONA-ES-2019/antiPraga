@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -28,9 +29,12 @@ import com.hackatona.epidemia.entity.Sintoma;
 import com.hackatona.epidemia.util.GPSTrackerActivity;
 import com.hackatona.epidemia.web.RequestService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.hackatona.epidemia.util.Constants.RISCOS_AREA;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,10 +106,9 @@ public class MainActivity extends AppCompatActivity {
                 requestService.enviarCoordenadas(new RequestService.BookmarkCallbackCoordenada() {
                     @Override
                     public void onSuccess(List<DoencaCoordenada> list) {
-                        System.out.println();
                         Intent intent = new Intent(getApplicationContext(), RiscoActivity.class);
+                        intent.putExtra(RISCOS_AREA, (Serializable) list);
                         startActivity(intent);
-                        finish();
                     }
 
                     @Override
@@ -125,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                requestService.enviarSintomas(new RequestService.BookmarkCallback() {
+                requestService.enviarSintomas(new RequestService.BookmarkCallbackDoencas() {
                     @Override
-                    public void onSuccess(List<Sintoma> list) {
+                    public void onSuccess(List<DoencaCoordenada> list) {
 
                     }
 

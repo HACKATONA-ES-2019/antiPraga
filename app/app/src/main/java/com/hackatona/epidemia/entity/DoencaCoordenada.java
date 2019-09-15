@@ -1,6 +1,10 @@
 package com.hackatona.epidemia.entity;
 
-public class DoencaCoordenada {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class DoencaCoordenada implements Serializable {
 
     private String nome;
     private boolean isEpidemia;
@@ -10,6 +14,10 @@ public class DoencaCoordenada {
         this.nome = nome;
         this.isEpidemia = isEpidemia;
         this.quantidade = quantidade;
+    }
+
+    public DoencaCoordenada(String nome) {
+        this.nome = nome;
     }
 
     public String getNome() {
@@ -34,5 +42,11 @@ public class DoencaCoordenada {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    @Override
+    public String toString() {
+        return "Doença: " + getNome() + '\n' +
+                "Casos ocorridos: " + getQuantidade();
     }
 }
