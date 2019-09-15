@@ -53,5 +53,40 @@ public class RequestService {
         });
     }
 
+    public void enviarSintomas(final BookmarkCallback callback, List<Sintoma> listaSintomas) {
+
+        Call<List<Sintoma>> call = new RetrofitConfig().getServices().sendSintoma(listaSintomas);
+
+
+        call.enqueue(new Callback<List<Sintoma>>() {
+            @Override
+            public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
+                List<Sintoma> list = new ArrayList<>();
+                Sintoma sintoma;
+                if (!response.isSuccessful()) {
+                    callback.onError();
+                } else {
+
+
+
+                    for (Sintoma size : response.body()) {
+
+                        sintoma = new Sintoma(size.getNome(), size.getIdSintoma());
+
+                        list.add(sintoma);
+
+                    }
+                    callback.onSuccess(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Sintoma>> call, Throwable t) {
+                t.printStackTrace();
+                callback.onError();
+            }
+        });
+    }
+
 
 }
