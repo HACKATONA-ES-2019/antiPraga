@@ -10,9 +10,9 @@ appRoutes.get('/sintomas', (req, res, next) => {
 });
 
 appRoutes.post('/sintomas-doencas', (req, res) => {
-    const sintomas = req.body.sintomas;
+    const sintomas = req.body;
 
-    let query: string = `select distinct id,count(*) from hackatona.SintomaDoenca2 s where (`;
+    let query: string = `select distinct s.id,count(*) as num, d.nome from hackatona.SintomaDoenca2 s inner join hackatona.Doenca d on d.idDoenca = s.id where (`;
 
     sintomas.forEach((d: any) => {
         query = query.concat(`s.${getNomeSintoma(parseInt(d.id))} = 1  and `)
@@ -21,7 +21,16 @@ appRoutes.post('/sintomas-doencas', (req, res) => {
     query = query.substring(0,query.length -4);
     query = query.concat(') group by id');
 
-    console.log(query);
+    database.query(query, (error, results, fields ) => {
+        let lista: Array<{
+            id: number,
+            num: number,
+            nome: string
+        }> = []
+        lista = results;
+        lista = lista.sort((a:any, b:any) => b.num - a.num );
+        res.json(lista);
+    });
     
 })
 
