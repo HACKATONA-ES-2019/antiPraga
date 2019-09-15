@@ -9,6 +9,9 @@ appRoutes.get('/sintomas', (req, res, next) => {
     const a = database.query('select nome from Sintoma', (error, results, fields ) => {
         res.json(results.filter((n: any) => {
             const nome: string = n.nome;
+            if(!nome) {
+                return {error: "sintoma undefined"};
+            }
             return nome.toLowerCase().search(sintoma.toLowerCase()) != -1;
         }));
     });
