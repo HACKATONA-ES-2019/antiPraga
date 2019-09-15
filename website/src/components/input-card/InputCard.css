@@ -1,0 +1,146 @@
+.input-card-container {
+    position: fixed;
+    bottom: 10vh;
+    left: 3vw;
+    display: flex;
+    height: 70vh;
+    width: 25vw;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 40px;
+    transition: all 0.3s;
+}
+
+.autosuggest-container {
+    position:relative;
+    height: 40px;
+}
+
+.autosuggest-suggest-container-hide {
+    display: none;
+}
+
+.autosuggest-input {
+    width: 100%;
+    border: 0;
+    margin-top: 10px;
+    font-size: 20px;
+    border-bottom: 1px solid #777777;
+    z-index: 1;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+.autosuggest-input::placeholder {
+    color: #AAA;
+}
+
+.autosuggest-suggestion {
+    border-bottom: 1px solid #CCC;
+    cursor: pointer;
+}
+
+.autosuggest-suggestion:hover {
+    background-color: #CCC;
+}
+
+.autosuggest-suggest-container {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    border: 1px solid #CCC;
+    height: 240px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 5;
+}
+
+.autosuggest-container-doenca {
+    z-index: 0;
+}
+
+.input-field {
+    width: 100%;
+}
+
+.input-card-title {
+    margin-bottom: 50px;
+    font-weight: 600;
+}
+
+.input-field-auth {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-auth {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.input-auth:placeholder {
+    color: #CCC;
+}
+
+.radio-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: min-content;
+}
+
+.margin-top-clear {
+    margin-top: 40px;
+}
+
+.arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.input-card-hidden {
+    left: -26vw;
+}
+
+.send-button {
+    width: 100%;
+    height: 80px;
+    margin-top: 80px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #24b54b;
+    border: 1px solid #24b54b;
+    transition: all 0.3s;
+}
+
+.send-button:hover {
+    background-color: #24b54b;
+    color: white;
+}
+
+li {
+    list-style-type: none;
+    padding: 5px;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+span {
+    margin-top: 10px;
+}

@@ -1,0 +1,236 @@
+.header {
+    background-color: #24b54b;
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
+.title {
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.icon {
+    margin: 20px;
+    color: white;
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.search-bar-container {
+    padding: 5px;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 60px;
+}
+
+.search-bar {
+    padding: 5px;
+    width: 100%;
+    color: white !important;
+}
+
+.search-icon {
+    height: 20px !important;
+    width: 20px !important;
+    cursor: pointer;
+    color: #ccc;
+    transition: width 0.1s, height 0.1s;
+    margin: 0;
+}
+
+.search-icon:hover {
+    color: white;
+    height: 25px !important;
+    width: 25px !important;
+}
+
+.icon-container {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-card {
+    padding: 50px;
+    background-color: white;
+    height: max-content;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    margin: 25px;
+    margin-bottom: 50px;
+}
+
+.modal-field-container {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
+.field-title {
+    margin-left: 0px;
+}
+
+.modal-field {
+    width: 100%;
+}
+
+.modal-buttons {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-button {
+    background-color: transparent;
+    color: white;
+    height: 20px;
+    width: 80%;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 60px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: white;
+    color: #24b54b;
+}
+
+.modal-button {
+    background-color: transparent;
+    color: #24b54b;
+    height: 20px;
+    width: 80%;
+    border: 1px solid #24b54b;
+    border-radius: 5px;
+    height: 60px;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    justify-self: flex-end;
+    margin: 10px;
+}
+
+.modal-button:hover {
+    background-color: #24b54b;
+    color: white;
+}
+
+.input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.margin-top-clear {
+    margin-top: 20px;
+}
+
+.loading-icon-signup {
+    height: 30px !important;
+    width: 30px !important;
+    color: black;
+}
+
+.autosuggest-container {
+    z-index: 100;
+    position: relative;
+    height: 40px;
+    width: 100%;
+}
+
+.autosuggest-suggest-container-hide {
+    display: none;
+}
+
+.logo {
+    width: 100px;
+    height: 50px;
+}
+
+.autosuggest-input-header {
+    color: white;
+    width: 100%;
+    border: 0;
+    margin-top: 10px;
+    font-size: 20px;
+    border: 0;
+    background-color: transparent;
+}
+
+.autosuggest-input-header::placeholder {
+    color: #DDD;
+}
+
+.autosuggest-suggestion {
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.autosuggest-suggestion:hover {
+    background-color: #ccc;
+}
+
+.autosuggest-suggest-container {
+    background-color: white;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    border: 1px solid #ccc;
+    height: 240px;
+    overflow-y: auto;
+}
+
+.MuiRadio-colorSecondary.Mui-checked {
+    color: green !important;
+}
