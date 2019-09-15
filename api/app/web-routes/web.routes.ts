@@ -8,30 +8,37 @@ import { TipoEpidemia } from '../models/web/TipoEpidemia';
 export const webRoutes = express.Router();
 
 webRoutes.get('/epidemias', (req, res, next) => {
-    const epidemias: Epidemia[] = [
-        {
-            doenca: 'gripe',
-            epidemia: TipoEpidemia.EPIDEMIA,
-            lat: -30.056190,
-            lng: -51.172200,
-            radius: 75
-        },
-        {
-            doenca: 'sei la mano',
-            epidemia: TipoEpidemia.EPIDEMIA,
-            lat: -30.056390,
-            lng: -51.172105,
-            radius: 100
-        },
-        {
-            doenca: 'ebola',
-            epidemia: TipoEpidemia.POSSIVEL_EPIDEMIA,
-            lat: -30.055090,
-            lng: -51.122200,
-            radius: 90
-        }
-    ]
-    return res.json(epidemias);
+    let ponto_doencas: Array<{
+        idDoenca: number,
+        quantidade: number
+    }> = []
+
+    const radius = 0.5;
+
+    const myLat: number = Number(req.params.lat);
+    const myLng: number = Number(req.params.lng);
+    database.query(`select idDoenca, count(*) as num from hackatona.ponto_doenca group by idDoenca`,
+    (error, results, fields ) => {
+        console.log(results);
+        const idResults = results.filter((r: any) => r.num >= 5);
+        console.log(idResults);
+
+        let listaCoords: any[] = []
+        idResults.forEach((r: any, index: number) => {
+            database.query(`select lat,lng from hackatona.ponto_doenca where idDoenca = ${r.idDoenca}`, (error, results2, fields ) => {
+                listaCoords.push({
+                    id: r.idDoenca,
+                    lat: results2[0].lat,
+                    lng: results2[0].lng
+                });
+
+                if(index == idResults.length-1) {
+                    console.log(listaCoords);
+                    res.json(listaCoords);
+                }
+            });
+        });
+    });
 });
 
 webRoutes.post('/registra-medico', (req, res) => {
@@ -42,8 +49,9 @@ webRoutes.post('/registra-medico', (req, res) => {
         console.log(error);
         console.log(fields);
         if(error !== null) {
-            return res.status(200).json({})
+            return res.status(500).json({});
         }
+        return res.status(200).json({});
     });
 });
 
@@ -78,12 +86,12 @@ webRoutes.post('/inclui', (req, res) => {
         });
     } else if(!cremers && id_org) {
         return database.query(`select id_org,senha from Organizacao where id_org = ${id_org} and senha = '${senha}'`, (error, results, fields ) => {
-            if(results.length === 0 && numeroEpidemia) {
+            if(results.length === 0) {
                 return res.status(400).json({msg: 'id_org ou senha invalidos'});
             }
 
-            if(coord.lat && coord.lng && idDoenca) {
-                database.query('insert into Doenca (numeroEpidemia) values (' + numeroEpidemia + ')', () => {
+            if(idDoenca && numeroEpidemia) {
+                return database.query('update hackatona.Doenca set numeroEpidemia = '+ numeroEpidemia+ ' where idDoenca = ' + idDoenca, () => {
                     res.status(200).json({});
                 });
             }
@@ -99,10 +107,10 @@ webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
         quantidade: number
     }> = []
 
-    const radius = 0.09;
+    const radius = 0.5;
 
-    const myLat: number = parseInt(req.params.lat);
-    const myLng: number = parseInt(req.params.lng);
+    const myLat: number = Number(req.params.lat);
+    const myLng: number = Number(req.params.lng);
     database.query(`select idDoenca from ponto_doenca where (lat <= ${myLat + radius} and lat >= ${myLat - radius} and lng <= ${myLng + radius} and lng >= ${myLng - radius})`,
     (error, results, fields ) => {
         console.log(results.map((r: any) => r.idDoenca));
@@ -174,5 +182,5 @@ webRoutes.get('/doencas', (req, res, next) => {
         return res.json(results);
     });
     return;
-})
+});
 
