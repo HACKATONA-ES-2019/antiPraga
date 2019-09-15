@@ -1,4 +1,4 @@
-package com.hackatona.doencas;
+package com.hackatona.epidemia;
 
 import org.junit.Test;
 

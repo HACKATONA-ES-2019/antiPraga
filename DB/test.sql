@@ -67,5 +67,13 @@ VALUES(4,7);
 INSERT INTO SintomasDoenca(idDoenca,idSintoma)
 VALUES(4,8);
 
+ALTER TABLE `hackatona`.`Doenca` 
+CHANGE COLUMN `nome` `nome` VARCHAR(100) NOT NULL ,
+CHANGE COLUMN `idDoenca` `idDoenca` INT NOT NULL AUTO_INCREMENT ,
+ADD PRIMARY KEY (`idDoenca`);
 
+ALTER TABLE `hackatona`.`Sintoma` 
+CHANGE COLUMN `nome` `nome` VARCHAR(100) NOT NULL ,
+CHANGE COLUMN `idSintoma` `idSintoma` INT NOT NULL AUTO_INCREMENT ,
+ADD PRIMARY KEY (`idSintoma`);
 

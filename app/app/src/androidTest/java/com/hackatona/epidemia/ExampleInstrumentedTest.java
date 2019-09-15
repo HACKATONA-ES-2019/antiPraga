@@ -1,4 +1,4 @@
-package com.hackatona.doencas;
+package com.hackatona.epidemia;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.hackatona.doencas", appContext.getPackageName());
+        assertEquals("com.hackatona.epidemia", appContext.getPackageName());
     }
 }

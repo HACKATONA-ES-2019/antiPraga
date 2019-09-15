@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">Doencas</string>
-    <string name="hello">OLá pra voce</string>
+    <string name="app_name">Epidemia</string>
 </resources>
