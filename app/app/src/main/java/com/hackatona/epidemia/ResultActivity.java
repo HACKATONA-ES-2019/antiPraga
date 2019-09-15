@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hackatona.epidemia.entity.DoencaCoordenada;
+import com.hackatona.epidemia.entity.Sintoma;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class ResultActivity extends AppCompatActivity {
         ListView listview = findViewById(R.id.listaDoencas);
 
 
-        final List<DoencaCoordenada> lista = (List<DoencaCoordenada>) getIntent().getSerializableExtra(RESULTADOS_DOENCAS);
+        final List<Sintoma> lista = (List<Sintoma>) getIntent().getSerializableExtra(RESULTADOS_DOENCAS);
 
-        ArrayAdapter<DoencaCoordenada> adapter = new ArrayAdapter<DoencaCoordenada>(this, android.R.layout.simple_list_item_1, lista);
+        ArrayAdapter<Sintoma> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lista);
 
         listview.setAdapter(adapter);
 

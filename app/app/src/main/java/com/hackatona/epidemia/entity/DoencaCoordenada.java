@@ -2,12 +2,16 @@ package com.hackatona.epidemia.entity;
 
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class DoencaCoordenada implements Serializable {
 
     private String nome;
     private boolean isEpidemia;
+
+    @SerializedName("quantidade")
     private int quantidade;
 
     public DoencaCoordenada(String nome, boolean isEpidemia, int quantidade) {
@@ -16,8 +20,9 @@ public class DoencaCoordenada implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public DoencaCoordenada(String nome) {
+    public DoencaCoordenada(String nome, int quantidade) {
         this.nome = nome;
+        this.quantidade = quantidade;
     }
 
     public String getNome() {
