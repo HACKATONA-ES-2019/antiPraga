@@ -42,6 +42,7 @@ public class RequestService {
 
             @Override
             public void onFailure(Call<List<Sintoma>> call, Throwable t) {
+                t.printStackTrace();
                 callback.onError();
             }
         });
