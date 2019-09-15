@@ -2,6 +2,7 @@ package com.hackatona.epidemia.web;
 
 import com.hackatona.epidemia.entity.Sintoma;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,11 @@ public class RequestService {
         void onError();
     }
 
-    public void startService(final BookmarkCallback callback, String sintoma) {
+    public void retornarSintomas(final BookmarkCallback callback) {
 
-        Call<List<Sintoma>> call = new RetrofitConfig().getServices().requestSintoma(sintoma);
+        Call<List<Sintoma>> call = new RetrofitConfig().getServices().requestSintoma();
+
+
         call.enqueue(new Callback<List<Sintoma>>() {
             @Override
             public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
@@ -29,9 +32,11 @@ public class RequestService {
                     callback.onError();
                 } else {
 
+
+
                     for (Sintoma size : response.body()) {
 
-                        sintoma = new Sintoma(size.getNome());
+                        sintoma = new Sintoma(size.getNome(), size.getIdSintoma());
 
                         list.add(sintoma);
 
@@ -42,6 +47,42 @@ public class RequestService {
 
             @Override
             public void onFailure(Call<List<Sintoma>> call, Throwable t) {
+                t.printStackTrace();
+                callback.onError();
+            }
+        });
+    }
+
+    public void enviarSintomas(final BookmarkCallback callback, List<Sintoma> listaSintomas) {
+
+        Call<List<Sintoma>> call = new RetrofitConfig().getServices().sendSintoma(listaSintomas);
+
+
+        call.enqueue(new Callback<List<Sintoma>>() {
+            @Override
+            public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
+                List<Sintoma> list = new ArrayList<>();
+                Sintoma sintoma;
+                if (!response.isSuccessful()) {
+                    callback.onError();
+                } else {
+
+
+
+                    for (Sintoma size : response.body()) {
+
+                        sintoma = new Sintoma(size.getNome(), size.getIdSintoma());
+
+                        list.add(sintoma);
+
+                    }
+                    callback.onSuccess(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Sintoma>> call, Throwable t) {
+                t.printStackTrace();
                 callback.onError();
             }
         });
