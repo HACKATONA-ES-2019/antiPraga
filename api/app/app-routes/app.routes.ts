@@ -28,7 +28,16 @@ appRoutes.post('/sintomas-doencas', (req, res) => {
             nome: string
         }> = []
         lista = results;
-        lista = lista.sort((a:any, b:any) => b.num - a.num );
+        lista = lista
+        .sort((a:any, b:any) => b.num - a.num )
+        .map((obj: any) => {
+          return {
+            id: obj.id,
+            num: obj.num,
+            nome: obj.nome
+          }
+        });
+        console.log(lista);
         res.json(lista);
     });
     

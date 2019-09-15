@@ -17,10 +17,10 @@ webRoutes.get('/epidemias', (req, res, next) => {
 
     const myLat: number = Number(req.params.lat);
     const myLng: number = Number(req.params.lng);
-    database.query(`select idDoenca, count(*) as num from hackatona.ponto_doenca group by idDoenca`,
+    database.query(`select p.idDoenca,d.numeroEpidemia, count(*) as num from hackatona.ponto_doenca p, hackatona.Doenca d where (p.idDoenca = d.idDoenca) group by idDoenca;`,
     (error, results, fields ) => {
         console.log(results);
-        const idResults = results.filter((r: any) => r.num >= 5);
+        const idResults = results.filter((r: any) => r.num >= r.numeroEpidemia);
         console.log(idResults);
 
         let listaCoords: any[] = []
@@ -113,12 +113,9 @@ webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
     const myLng: number = Number(req.params.lng);
     database.query(`select idDoenca from ponto_doenca where (lat <= ${myLat + radius} and lat >= ${myLat - radius} and lng <= ${myLng + radius} and lng >= ${myLng - radius})`,
     (error, results, fields ) => {
-        console.log(results.map((r: any) => r.idDoenca));
         const idResults = results
         .map((r: any) => r.idDoenca)
         .sort((a:number,b :number) => a - b);
-
-        console.log(idResults);
 
         if(idResults.length > 0) {
             let lastId = idResults[0] 
@@ -140,7 +137,6 @@ webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
                     i = i-1;
                 }
             }
-            console.log(ponto_doencas);
             let query: string = `select d.nome, d.numeroEpidemia from Doenca d where (`;
             ponto_doencas.forEach((d: any) => {
                query = query.concat(`idDoenca = ${d.idDoenca} OR `)
@@ -157,15 +153,12 @@ webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
                         quantidade: ponto_doencas[i].quantidade
                     });
                 }
-                res.json(response);
-                return;
+                return res.status(200).json(response);
             });
-            return;
+        } else {
+            return res.status(404).json([]);
         }
-        
-        return;
     });
-    return;
 });
 
 webRoutes.get('/doencas', (req, res, next) => {
