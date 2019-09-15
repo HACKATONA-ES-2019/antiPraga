@@ -69,7 +69,9 @@ webRoutes.post('/inclui', (req, res) => {
             }
             
             if(coord.lat && coord.lng && idDoenca) {
-                database.query('insert into Ponto_doenca (idDoenca, lat, lng) values (' + idDoenca + ',' + coord.lat + ',' + coord.lng + ')', () => {});
+                database.query('insert into ponto_doenca (idDoenca, lat, lng) values (' + idDoenca + ',' + coord.lat + ',' + coord.lng + ')', () => {
+                    res.status(200).json({});
+                });
             }
 
 
@@ -81,7 +83,9 @@ webRoutes.post('/inclui', (req, res) => {
             }
 
             if(coord.lat && coord.lng && idDoenca) {
-                database.query('insert into Doenca (numeroEpidemia) values (' + numeroEpidemia + ')', () => {});
+                database.query('insert into Doenca (numeroEpidemia) values (' + numeroEpidemia + ')', () => {
+                    res.status(200).json({});
+                });
             }
         });
     }    
@@ -90,29 +94,85 @@ webRoutes.post('/inclui', (req, res) => {
 
 webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
 
-    const radius = 0.05;
+    let ponto_doencas: Array<{
+        idDoenca: number,
+        quantidade: number
+    }> = []
+
+    const radius = 0.09;
 
     const myLat: number = parseInt(req.params.lat);
     const myLng: number = parseInt(req.params.lng);
-    database.query(`select idDoenca from Ponto_doenca where (lat <= ${myLat + radius} and lat >= ${myLat - radius} and lng <= ${myLng + radius} and lng >= ${myLng - radius})`,
+    database.query(`select idDoenca from ponto_doenca where (lat <= ${myLat + radius} and lat >= ${myLat - radius} and lng <= ${myLng + radius} and lng >= ${myLng - radius})`,
     (error, results, fields ) => {
-        console.log(results);
-    }
-    );
+        console.log(results.map((r: any) => r.idDoenca));
+        const idResults = results
+        .map((r: any) => r.idDoenca)
+        .sort((a:number,b :number) => a - b);
+
+        console.log(idResults);
+
+        if(idResults.length > 0) {
+            let lastId = idResults[0] 
+            let lastIdIndex = 0
+            ponto_doencas.push({
+                idDoenca: lastId,
+                quantidade: 0
+            })
+            for(let i = 0; i < idResults.length; i++) {
+                if(idResults[i] === lastId) {
+                    ponto_doencas[lastIdIndex].quantidade = ponto_doencas[lastIdIndex].quantidade + 1;
+                } else {
+                    lastId = idResults[i];
+                    lastIdIndex = lastIdIndex + 1;
+                    ponto_doencas.push({
+                        idDoenca: lastId,
+                        quantidade: 0
+                    });
+                    i = i-1;
+                }
+            }
+            console.log(ponto_doencas);
+            let query: string = `select d.nome, d.numeroEpidemia from Doenca d where (`;
+            ponto_doencas.forEach((d: any) => {
+               query = query.concat(`idDoenca = ${d.idDoenca} OR `)
+            })
+            query = query.substring(0,query.length -4);
+            query = query.concat(')');
+            database.query(query, (error, results2, fields ) => {
+                console.log(results2);
+                const response = [];
+                for(let i = 0; i < ponto_doencas.length; i++) {
+                    response.push({
+                        nome: results2[i].nome,
+                        isEpidemia: (ponto_doencas[i].quantidade > results2[i].numeroEpidemia),
+                        quantidade: ponto_doencas[i].quantidade
+                    });
+                }
+                res.json(response);
+                return;
+            });
+            return;
+        }
+        
+        return;
+    });
+    return;
 });
 
 webRoutes.get('/doencas', (req, res, next) => {
-    const doenca = req.query.doenca;
-    console.log('doenca: ' + doenca);
+    //const doenca = req.query.doenca;
+    //console.log('doenca: ' + doenca);
     const a = database.query('select idDoenca,nome from Doenca', (error, results, fields ) => {
-        const lista =results.filter((n: any) => {
-            const nome: string = n.nome;
-            return nome.toLowerCase().search(doenca.toLowerCase()) != -1;
-        });
-        if(lista.length === 0) {
-            return res.status(400).json({msg: "erro mano, seila"});
-        }
-        return res.json(lista);
+        // const lista =results.filter((n: any) => {
+        //     const nome: string = n.nome;
+        //     return nome.toLowerCase().search(doenca.toLowerCase()) != -1;
+        // });
+        // if(lista.length === 0) {
+        //     return res.status(400).json({msg: "erro mano, seila"});
+        // }
+        return res.json(results);
     });
     return;
 })
+
