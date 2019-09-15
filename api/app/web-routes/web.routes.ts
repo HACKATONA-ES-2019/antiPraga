@@ -20,22 +20,24 @@ webRoutes.get('/epidemias', (req, res, next) => {
     database.query(`select idDoenca, count(*) as num from hackatona.ponto_doenca group by idDoenca`,
     (error, results, fields ) => {
         console.log(results);
-        const idResults = results.filter((r: any) => r.num > 4);
+        const idResults = results.filter((r: any) => r.num >= 5);
         console.log(idResults);
 
         let listaCoords: any[] = []
-        idResults.forEach((r: any) => {
+        idResults.forEach((r: any, index: number) => {
             database.query(`select lat,lng from hackatona.ponto_doenca where idDoenca = ${r.idDoenca}`, (error, results2, fields ) => {
                 listaCoords.push({
                     id: r.idDoenca,
                     lat: results2[0].lat,
                     lng: results2[0].lng
-                })
+                });
+
+                if(index == idResults.length-1) {
+                    console.log(listaCoords);
+                    res.json(listaCoords);
+                }
             });
         });
-
-        console.log(listaCoords);
-        res.json(listaCoords);
     });
 });
 
@@ -47,8 +49,9 @@ webRoutes.post('/registra-medico', (req, res) => {
         console.log(error);
         console.log(fields);
         if(error !== null) {
-            return res.status(200).json({})
+            return res.status(500).json({});
         }
+        return res.status(200).json({});
     });
 });
 
@@ -83,12 +86,12 @@ webRoutes.post('/inclui', (req, res) => {
         });
     } else if(!cremers && id_org) {
         return database.query(`select id_org,senha from Organizacao where id_org = ${id_org} and senha = '${senha}'`, (error, results, fields ) => {
-            if(results.length === 0 && numeroEpidemia) {
+            if(results.length === 0) {
                 return res.status(400).json({msg: 'id_org ou senha invalidos'});
             }
 
-            if(coord.lat && coord.lng && idDoenca) {
-                database.query('insert into Doenca (numeroEpidemia) values (' + numeroEpidemia + ')', () => {
+            if(idDoenca && numeroEpidemia) {
+                return database.query('update hackatona.Doenca set numeroEpidemia = '+ numeroEpidemia+ ' where idDoenca = ' + idDoenca, () => {
                     res.status(200).json({});
                 });
             }
