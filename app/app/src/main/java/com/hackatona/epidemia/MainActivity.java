@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.hackatona.epidemia.util.Constants.RISCOS_AREA;
+import static com.hackatona.epidemia.util.Constants.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -130,8 +130,11 @@ public class MainActivity extends AppCompatActivity {
 
                 requestService.enviarSintomas(new RequestService.BookmarkCallbackDoencas() {
                     @Override
-                    public void onSuccess(List<DoencaCoordenada> list) {
-
+                    public void onSuccess(List<String> list) {
+                        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                        intent.putExtra(RESULTADOS_DOENCAS, (Serializable) list);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override

@@ -8,4 +8,5 @@ public class Constants {
     public static final String SEND_COORDENADAS = "web/doencas-coord/{latitude}/{longitude}";
 
     public static final String RISCOS_AREA = "RISCOS_AREA";
+    public static final String RESULTADOS_DOENCAS = "RESULTADOS_DOENCAS";
 }

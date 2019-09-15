@@ -7,4 +7,5 @@
     <string name="lista_sintomas">Sintomas adicionados:</string>
     <string name="sintoma">Sintoma</string>
     <string name="riscos">Riscos na sua área!</string>
+    <string name="titulo_resultado">Seu pré-diagnóstico é:</string>
 </resources>

@@ -22,15 +22,11 @@ public class RiscoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_risco);
 
-        ListView listview = (ListView) findViewById(R.id.lista);
+        ListView listview = findViewById(R.id.lista);
 
 
         final List<DoencaCoordenada> lista = (List<DoencaCoordenada>) getIntent().getSerializableExtra(RISCOS_AREA);
 
-
-        ArrayAdapter<DoencaCoordenada> adapter = new ArrayAdapter<DoencaCoordenada>(this, android.R.layout.simple_list_item_1, lista);
-
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lista);
         listview.setAdapter(new ArrayAdapter<DoencaCoordenada>(this, android.R.layout.simple_list_item_1, lista) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
