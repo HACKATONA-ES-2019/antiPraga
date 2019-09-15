@@ -38,6 +38,9 @@ webRoutes.get('/epidemias', (req, res, next) => {
                 }
             });
         });
+        if(idResults.length === 0) {
+            res.status(400).json([]);
+        }
     });
 });
 
@@ -156,7 +159,7 @@ webRoutes.get('/doencas-coord/:lat/:lng', (req, res, next) => {
                 return res.status(200).json(response);
             });
         } else {
-            return res.status(404).json([]);
+            return res.status(400).json([]);
         }
     });
 });
