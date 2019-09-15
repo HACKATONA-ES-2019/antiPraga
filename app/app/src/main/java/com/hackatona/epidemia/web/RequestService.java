@@ -1,5 +1,6 @@
 package com.hackatona.epidemia.web;
 
+import com.hackatona.epidemia.entity.DoencaCoordenada;
 import com.hackatona.epidemia.entity.Sintoma;
 
 import java.io.IOException;
@@ -14,6 +15,12 @@ public class RequestService {
 
     public interface BookmarkCallback {
         void onSuccess(List<Sintoma> list);
+
+        void onError();
+    }
+
+    public interface BookmarkCallbackCoordenada {
+        void onSuccess(List<DoencaCoordenada> list);
 
         void onError();
     }
@@ -82,6 +89,41 @@ public class RequestService {
 
             @Override
             public void onFailure(Call<List<Sintoma>> call, Throwable t) {
+                t.printStackTrace();
+                callback.onError();
+            }
+        });
+    }
+
+    public void enviarCoordenadas(final BookmarkCallbackCoordenada callback, double latitude, double longitude) {
+
+        Call<List<DoencaCoordenada>> call = new RetrofitConfig().getServices().sendCoordenadas(latitude, longitude);
+
+
+        call.enqueue(new Callback<List<DoencaCoordenada>>() {
+            @Override
+            public void onResponse(Call<List<DoencaCoordenada>> call, Response<List<DoencaCoordenada>> response) {
+                List<DoencaCoordenada> list = new ArrayList<>();
+                DoencaCoordenada doencaCoordenada;
+                if (!response.isSuccessful()) {
+                    callback.onError();
+                } else {
+
+
+
+                    for (DoencaCoordenada size : response.body()) {
+
+                        doencaCoordenada = new DoencaCoordenada(size.getNome(), size.isEpidemia(), size.getQuantidade());
+
+                        list.add(doencaCoordenada);
+
+                    }
+                    callback.onSuccess(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DoencaCoordenada>> call, Throwable t) {
                 t.printStackTrace();
                 callback.onError();
             }

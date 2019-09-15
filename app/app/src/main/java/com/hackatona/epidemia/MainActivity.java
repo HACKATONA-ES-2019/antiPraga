@@ -23,6 +23,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hackatona.epidemia.entity.DoencaCoordenada;
 import com.hackatona.epidemia.entity.Sintoma;
 import com.hackatona.epidemia.util.GPSTrackerActivity;
 import com.hackatona.epidemia.web.RequestService;
@@ -97,7 +98,23 @@ public class MainActivity extends AppCompatActivity {
         biohazard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(intent,1);
+
+                requestService.enviarCoordenadas(new RequestService.BookmarkCallbackCoordenada() {
+                    @Override
+                    public void onSuccess(List<DoencaCoordenada> list) {
+                        System.out.println();
+                        Intent intent = new Intent(getApplicationContext(), RiscoActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                }, latitude, longitude);
+
+
             }
         });
 
