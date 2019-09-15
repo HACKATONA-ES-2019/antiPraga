@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,13 +24,17 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hackatona.epidemia.entity.DoencaCoordenada;
 import com.hackatona.epidemia.entity.Sintoma;
 import com.hackatona.epidemia.util.GPSTrackerActivity;
 import com.hackatona.epidemia.web.RequestService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.hackatona.epidemia.util.Constants.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,7 +102,22 @@ public class MainActivity extends AppCompatActivity {
         biohazard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(intent,1);
+
+                requestService.enviarCoordenadas(new RequestService.BookmarkCallbackCoordenada() {
+                    @Override
+                    public void onSuccess(List<DoencaCoordenada> list) {
+                        Intent intent = new Intent(getApplicationContext(), RiscoActivity.class);
+                        intent.putExtra(RISCOS_AREA, (Serializable) list);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                }, latitude, longitude);
+
+
             }
         });
 
@@ -108,10 +128,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                requestService.enviarSintomas(new RequestService.BookmarkCallback() {
+                requestService.enviarSintomas(new RequestService.BookmarkCallbackDoencas() {
                     @Override
-                    public void onSuccess(List<Sintoma> list) {
-
+                    public void onSuccess(List<String> list) {
+                        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                        intent.putExtra(RESULTADOS_DOENCAS, (Serializable) list);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override
