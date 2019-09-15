@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
                 requestService.enviarSintomas(new RequestService.BookmarkCallbackDoencas() {
                     @Override
-                    public void onSuccess(List<String> list) {
+                    public void onSuccess(List<Sintoma> list) {
                         Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
                         intent.putExtra(RESULTADOS_DOENCAS, (Serializable) list);
                         startActivity(intent);

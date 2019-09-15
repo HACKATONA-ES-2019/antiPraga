@@ -25,7 +25,7 @@ public class RequestService {
         void onError();
     }
   public interface BookmarkCallbackDoencas {
-        void onSuccess(List<String> list);
+        void onSuccess(List<Sintoma> list);
 
         void onError();
     }
@@ -73,8 +73,7 @@ public class RequestService {
         call.enqueue(new Callback<List<Sintoma>>() {
             @Override
             public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
-                List<String> list = new ArrayList<>();
-                DoencaCoordenada doencaCoordenada;
+                List<Sintoma> list = new ArrayList<>();
                 if (!response.isSuccessful()) {
                     callback.onError();
                 } else {
@@ -83,7 +82,7 @@ public class RequestService {
 
                     for (Sintoma size : response.body()) {
 
-                        list.add(size.getNome());
+                        list.add(new Sintoma(size.getNome(), size.getIdSintoma(), size.getQuantidade()));
 
                     }
                     callback.onSuccess(list);
