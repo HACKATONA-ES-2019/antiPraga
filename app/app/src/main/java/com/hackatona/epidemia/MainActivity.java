@@ -1,12 +1,16 @@
 package com.hackatona.epidemia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,11 +18,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hackatona.epidemia.entity.Sintoma;
+import com.hackatona.epidemia.util.GPSTrackerActivity;
 import com.hackatona.epidemia.web.RequestService;
 
 import java.util.ArrayList;
@@ -32,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     AutoCompleteTextView campoSintoma;
     List<Sintoma> sintomasConfirmados = new ArrayList<>();
     TextView sintomasCadastrados;
+    Double longitude;
+    Double latitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +93,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageView biohazard = findViewById(R.id.biohazard);
+        biohazard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(intent,1);
+            }
+        });
+
         Button botaoPronto = findViewById(R.id.botaoPronto);
         botaoPronto.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View view) {
+
 
                 requestService.enviarSintomas(new RequestService.BookmarkCallback() {
                     @Override
@@ -105,31 +124,19 @@ public class MainActivity extends AppCompatActivity {
             }
             });
 
-
-        /*        LocationManager locManager;
-                locManager =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L,
-                        500.0f, locationListener);
-                Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                }
-                System.out.println();
-            }
-        });*/
-
-    }
-
-
-
-    private void setarSintomas(List<Sintoma> list) {
-                campoSintoma.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list));
+        Intent intent = new Intent(this, GPSTrackerActivity.class);
+        startActivityForResult(intent,1);
 
 
     }
 
-
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            Bundle extras = data.getExtras();
+            longitude = extras.getDouble("Longitude");
+            latitude = extras.getDouble("Latitude");
+        }
+    }
 
 }
